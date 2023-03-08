@@ -15,22 +15,90 @@
                 <label for="titleTask">Titulo</label>
                 <input type="text" id="titleTask" placeholder="Crie um titulo...">
                 <label for="taskName">Tarefa</label>
-                <input type="text" id="taskName" placeholder="Crie uma tarefa..">
+                <input type="text" id="taskName" placeholder="Crie uma tarefa.." >
                 <input type="submit" value="Criar" title="clique para criar tarefa">
             </div>
         </form>
     </header>
     <main>
         <div class="tasksList" id="tasks">
-            <h1 id="titleTasks"></h1>
-            <!-- <div class="Task">
-                <input type="checkbox">
-                <p>Usar a deriva @media</p>
-            </div> -->
+            <h1 id="titleTasksH1"></h1>
         </div>
     </main>
     <script>
+        var form = document.querySelector("form");
+        form.onsubmit = formTask;
+
+        function formTask (e) {
+
+            e.preventDefault();
+            var titleTasksH1 = document.getElementById("titleTasksH1");
+            var titleTask = document.getElementById("titleTask");
+            var taskName = document.getElementById("taskName");
+            var tasks = document.getElementById("tasks");
+
+            if(titleTask.value){
+                let saved = window.confirm("clique em Ok para salvar o titulo no navegador ");
+                if(saved) {
+                    window.localStorage.setItem("Title", titleTask.value);
+                    window.alert("Salvo com sucesso!");
+                }else {
+                    window.alert('Titulo não foi salva, por isso se vc atualizar perderar tudo!');
+                }
+                titleTasksH1.innerText = titleTask.value;
+                titleTask.value = "";
+            }
+
+            if(taskName.value) {
+                let savedTitle = window.confirm("click em Ok para salvar essa tarefa no navegador ");
+                if(savedTitle) {
+                    let nameItem = 'Task'+Math.floor(Math.random() * 10000);
+                    window.localStorage.setItem(nameItem, taskName.value);
+                    window.alert("Salvo com sucesso!");
+                }else {
+                    window.alert('Tarefa não foi salva, por isso se vc atualizar perderar tudo!');
+                }
+                tasks.innerHTML += `
+                <div class="Task">
+                    <input type="checkbox">
+                    <p>${taskName.value}</p>
+                </div>
+                `;
+                taskName.value = "";
+            }
+
+        }
+        // Quando a página recarregar
         
+        window.onload = ()=>{
+            if(window.localStorage.length == 0) {
+                window.alert("Como vc não salvou nada o site ele está limpo!");
+            }else {
+                window.alert("Você tem conteúdo salvo, faremos o possivel para retorna com o conteudo!")
+                var deleted = window.confirm("Clicque em Ok para apagar o antigo e criar um novo");
+                if(deleted) {
+                    window.localStorage.clear();
+                    window.alert("Deletado com sucesso!");
+                }else {
+                    window.alert("Ok nada foi deletado!");
+                    let title = document.getElementById("titleTasksH1");
+                    title.innerText = window.localStorage.Title;
+                    let tasks = document.getElementById("tasks");
+                    for(let item in window.localStorage) {
+                        if(item != "Title" && item != "key" && item != "getItem" && item != "length" && item != "removeItem" && item != "clear" && item != "setItem") {
+                            tasks.innerHTML += `
+                            <div class="Task">
+                                <input type="checkbox">
+                                <p>${window.localStorage.getItem(item)}</p>
+                            </div>
+                            `;
+                        }
+                    }
+                }
+            }
+        }
+                    
+
     </script>
 </body>
 </html>
