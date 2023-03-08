@@ -1,4 +1,4 @@
-![Captura](CaptureTaskManange.PNG)
+<img src="https://github.com/Lairton-G/Task-manager/blob/main/CapturaTaskMananger.PNG?raw=true" width="60%">
 
 <h2> Tecnologias Usadas </h2>
 
